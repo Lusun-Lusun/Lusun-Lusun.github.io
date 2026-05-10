@@ -2,7 +2,7 @@
 title: "从 0 到 1 的进阶：我的 Hugo + GitHub Pages 博客搭建实录"
 date: 2026-05-10
 draft: false
-tags: ["Hugo", "GitHub Pages", "环境配置"]
+tags: ["Hugo", "GitHub Pages", "博客", "blog", "环境配置"]
 categories: ["技术笔记"]
 ---
 
