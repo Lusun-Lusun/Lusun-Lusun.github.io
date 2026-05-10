@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Hugo on Lusun的技术博客</title>
-    <link>http://localhost:1313/tags/hugo/</link>
-    <description>Recent content in Hugo on Lusun的技术博客</description>
+    <title>Troubleshooting on Lusun的技术博客</title>
+    <link>http://localhost:1313/tags/troubleshooting/</link>
+    <description>Recent content in Troubleshooting on Lusun的技术博客</description>
     <generator>Hugo</generator>
     <language>en-ucn</language>
     <lastBuildDate>Sun, 10 May 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/troubleshooting/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>为什么我的 Hugo 博客上线后点击文章会跳到 Example.org？</title>
       <link>http://localhost:1313/posts/26-05-10blog2/</link>
@@ -38,33 +38,6 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;baseURL&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;[https://your-username.github.io/](https://your-username.github.io/)&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ol&gt;</description>
-    </item>
-    <item>
-      <title>从 0 到 1 的进阶：我的 Hugo &#43; GitHub Pages 博客搭建实录</title>
-      <link>http://localhost:1313/posts/my-first-blog-build-guide/</link>
-      <pubDate>Sun, 10 May 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/my-first-blog-build-guide/</guid>
-      <description>&lt;p&gt;拥有一个个人技术博客不仅是记录成长的空间，更是理解 Web 部署、版本控制和自动化流程的绝佳实践。今天，我完成了从本地环境搭建到 GitHub 全球发布的全部流程。&lt;/p&gt;
-&lt;h2 id=&#34;1-核心流程总结&#34;&gt;1. 核心流程总结&lt;/h2&gt;
-&lt;p&gt;整个工作流可以概括为：&lt;strong&gt;本地撰写 -&amp;gt; Git 提交 -&amp;gt; GitHub Actions 自动编译 -&amp;gt; GitHub Pages 发布。&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;环境构建&lt;/strong&gt;：安装 Hugo Extended 版（确保支持高级 CSS 处理）和 Git 环境。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;本地起步&lt;/strong&gt;：使用 &lt;code&gt;hugo new site&lt;/code&gt; 初始化项目结构，并引入 &lt;strong&gt;PaperMod&lt;/strong&gt; 极简主题。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;内容创作&lt;/strong&gt;：在 VS Code 中利用 Markdown 编写文章，通过 &lt;code&gt;hugo server&lt;/code&gt; 进行本地实时预览（&lt;code&gt;localhost:1313&lt;/code&gt;）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;自动化部署 (CI/CD)&lt;/strong&gt;：在 GitHub 建立 &lt;code&gt;username.github.io&lt;/code&gt; 仓库，通过 GitHub Actions 脚本实现自动化。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;2-博客更新工作流&#34;&gt;2. 博客更新工作流&lt;/h2&gt;
-&lt;p&gt;现在，我只需三步即可更新博客：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;写文章：hugo new posts/article-name.md&lt;/li&gt;
-&lt;li&gt;预览：hugo server -D（在本地 localhost:1313 实时查看效果）&lt;/li&gt;
-&lt;li&gt;发布：&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git add .
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git commit -m &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Add new post&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git push
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;3-踩坑与避坑指南&#34;&gt;3. 踩坑与避坑指南&lt;/h2&gt;
-&lt;p&gt;在搭建过程中，我遇到了几个非常具有代表性的问题：&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

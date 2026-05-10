@@ -18,6 +18,37 @@
 &lt;h2 id=&#34;这是我在-github-pages-上部署的第一篇博客记录我的学习成长&#34;&gt;这是我在 GitHub Pages 上部署的第一篇博客，记录我的学习成长。&lt;/h2&gt;</description>
     </item>
     <item>
+      <title>为什么我的 Hugo 博客上线后点击文章会跳到 Example.org？</title>
+      <link>http://localhost:1313/posts/26-05-10blog2/</link>
+      <pubDate>Sun, 10 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/26-05-10blog2/</guid>
+      <description>&lt;p&gt;恭喜你，如果你的 GitHub Pages 已经能显示主页，但点击文章却跳转到了一个写着 &amp;ldquo;Example Domain&amp;rdquo; 的陌生页面，这说明你已经离成功只差临门一脚了。&lt;/p&gt;
+&lt;p&gt;这是 Hugo 这种静态网站生成器逻辑中一个非常经典、但也极具欺骗性的配置问题。&lt;/p&gt;
+&lt;h2 id=&#34;1-现象描述&#34;&gt;1. 现象描述&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;本地环境&lt;/strong&gt;：运行 &lt;code&gt;hugo server&lt;/code&gt;，点击文章标题，跳转完美。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;线上环境&lt;/strong&gt;：访问 &lt;code&gt;https://username.github.io&lt;/code&gt;，主页正常显示，但点击文章，浏览器地址栏突然变成了 &lt;code&gt;https://example.org/posts/xxx&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-深度原因排查baseurl-的幻觉&#34;&gt;2. 深度原因排查：baseURL 的“幻觉”&lt;/h2&gt;
+&lt;p&gt;问题的核心在于项目根目录下的 &lt;strong&gt;&lt;code&gt;hugo.toml&lt;/code&gt;&lt;/strong&gt; (或 &lt;code&gt;config.toml&lt;/code&gt;) 文件中的第一行配置：&lt;code&gt;baseURL&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;为什么本地没发现&#34;&gt;为什么本地没发现？&lt;/h3&gt;
+&lt;p&gt;当你在本地运行 &lt;code&gt;hugo server&lt;/code&gt; 时，Hugo 会为了方便开发者，&lt;strong&gt;自动覆盖&lt;/strong&gt; 配置文件里的 &lt;code&gt;baseURL&lt;/code&gt;。无论你那里写的是什么，Hugo 都会强制所有链接指向 &lt;code&gt;http://localhost:1313/&lt;/code&gt;。这导致你在开发阶段完全无法感知这个错误的配置。&lt;/p&gt;
+&lt;h3 id=&#34;线上发生了什么&#34;&gt;线上发生了什么？&lt;/h3&gt;
+&lt;p&gt;当代码推送到 GitHub，GitHub Actions 执行 &lt;code&gt;hugo&lt;/code&gt; 命令进行静态资源编译时，它会严格遵守你的配置文件。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;默认值&lt;/strong&gt;：Hugo 初始化的模板通常默认 &lt;code&gt;baseURL = &#39;https://example.org/&#39;&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;后果&lt;/strong&gt;：Hugo 在生成 HTML 文件时，会把所有的链接（CSS路径、图片路径、文章点击路径）全部拼接上这个默认地址。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结果就是：GitHub 虽然成功托管了你的网页，但网页里的每一个按钮都在指引浏览器跳往 &lt;code&gt;example.org&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;3-解决方案&#34;&gt;3. 解决方案&lt;/h2&gt;
+&lt;p&gt;只需将这个“演示地址”修正为你真实的博客地址即可。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;修改配置&lt;/strong&gt;：打开 &lt;code&gt;hugo.toml&lt;/code&gt;，将第一行改为：
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;baseURL&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;[https://your-username.github.io/](https://your-username.github.io/)&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    <item>
       <title>从 0 到 1 的进阶：我的 Hugo &#43; GitHub Pages 博客搭建实录</title>
       <link>http://localhost:1313/posts/my-first-blog-build-guide/</link>
       <pubDate>Sun, 10 May 2026 00:00:00 +0000</pubDate>
@@ -43,6 +74,59 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git push
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;3-踩坑与避坑指南&#34;&gt;3. 踩坑与避坑指南&lt;/h2&gt;
 &lt;p&gt;在搭建过程中，我遇到了几个非常具有代表性的问题：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>解决VSCode中C&#43;&#43;编译报错“undefined reference”：将gcc改为g&#43;&#43;</title>
+      <link>http://localhost:1313/posts/26-05-10blog3/</link>
+      <pubDate>Sun, 10 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/26-05-10blog3/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;记录一次在VSCode中编译C++代码时遇到的链接错误及解决方法&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;问题现象&#34;&gt;问题现象&lt;/h2&gt;
+&lt;p&gt;我写了一个简单的C++程序，用到了&lt;code&gt;vector&lt;/code&gt;、&lt;code&gt;cin&lt;/code&gt;、&lt;code&gt;cout&lt;/code&gt;等标准库功能。在命令行中使用&lt;code&gt;g++&lt;/code&gt;编译运行一切正常，但是换到VSCode中按&lt;code&gt;Ctrl+Shift+B&lt;/code&gt;构建时，却报了一大堆链接错误：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;undefined reference to operator new(unsigned long long)&amp;#39; undefined reference tostd::cout&amp;#39;
+undefined reference to `std::basic_ostream&amp;lt;char...&amp;gt;&amp;amp; std::endl&amp;lt;char...&amp;gt;(std::basic_ostream&amp;lt;char...&amp;gt;&amp;amp;)&amp;#39;
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;错误信息显示找不到&lt;code&gt;operator new&lt;/code&gt;、标准输入输出流等符号，明显是&lt;strong&gt;链接阶段出了问题&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;原因分析&#34;&gt;原因分析&lt;/h2&gt;
+&lt;p&gt;VSCode的C++项目默认会生成一个&lt;code&gt;.vscode/tasks.json&lt;/code&gt;文件来定义编译任务。我检查了一下发现，该文件中的&lt;code&gt;&amp;quot;command&amp;quot;&lt;/code&gt;字段写的是&lt;code&gt;gcc&lt;/code&gt;，而不是&lt;code&gt;g++&lt;/code&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;gcc&lt;/code&gt; 是C语言编译器驱动，&lt;strong&gt;不会自动链接C++标准库&lt;/strong&gt;（如&lt;code&gt;libstdc++&lt;/code&gt;），因此找不到&lt;code&gt;operator new&lt;/code&gt;、&lt;code&gt;std::cout&lt;/code&gt;等C++特有的符号。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;g++&lt;/code&gt; 是C++编译器驱动，会自动链接C++标准库，适合编译&lt;code&gt;.cpp&lt;/code&gt;文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;命令行中我使用的是&lt;code&gt;g++&lt;/code&gt;，所以正常；而VSCode调用了&lt;code&gt;gcc&lt;/code&gt;，自然就报链接错误了。&lt;/p&gt;
+&lt;h2 id=&#34;解决方法&#34;&gt;解决方法&lt;/h2&gt;
+&lt;p&gt;有两种方式可以解决，我采用了最简单的一种：&lt;strong&gt;通过VSCode的图形菜单重新生成正确的tasks.json&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;步骤&#34;&gt;步骤&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;在VSCode中打开你的C++源文件所在的文件夹。&lt;/li&gt;
+&lt;li&gt;点击顶部菜单栏 &lt;strong&gt;终端(Terminal)&lt;/strong&gt; → &lt;strong&gt;配置默认生成任务(Configure Default Build Task&amp;hellip;)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;在弹出的列表中选择 &lt;strong&gt;C/C++: g++ build active file&lt;/strong&gt;（注意一定要选包含&lt;code&gt;g++&lt;/code&gt;的选项，不要选&lt;code&gt;gcc&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;VSCode会自动在&lt;code&gt;.vscode&lt;/code&gt;文件夹下生成新的&lt;code&gt;tasks.json&lt;/code&gt;文件，并询问是否覆盖，点击“允许”。&lt;/li&gt;
+&lt;li&gt;再次按&lt;code&gt;Ctrl+Shift+B&lt;/code&gt;构建，编译成功，生成的可执行文件可以正常运行。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;备选方案手动修改&#34;&gt;备选方案：手动修改&lt;/h3&gt;
+&lt;p&gt;如果你希望手动修改现有的&lt;code&gt;tasks.json&lt;/code&gt;，只需将&lt;code&gt;&amp;quot;command&amp;quot;&lt;/code&gt;字段的值从&lt;code&gt;&amp;quot;gcc&amp;quot;&lt;/code&gt;改为&lt;code&gt;&amp;quot;g++&amp;quot;&lt;/code&gt;，保存即可。例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;version&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2.0.0&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;tasks&amp;#34;&lt;/span&gt;: [
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;label&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;build&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;shell&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;command&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;g++&amp;#34;&lt;/span&gt;,   &lt;span style=&#34;color:#75715e&#34;&gt;// 原来是 gcc，改成 g++
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;args&amp;#34;&lt;/span&gt;: [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-g&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;${file}&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-o&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;${fileDirname}/${fileBasenameNoExtension}.exe&amp;#34;&lt;/span&gt;],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;group&amp;#34;&lt;/span&gt;: {&lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;build&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;isDefault&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;VSCode的默认C++编译任务可能使用gcc，导致C++程序链接失败。&lt;/li&gt;
+&lt;li&gt;解决要领：确保编译任务使用的是g++而不是gcc。&lt;/li&gt;
+&lt;li&gt;可以通过菜单重新选择“g++ build active file”快速修复，也可以手动修改tasks.json。
+一个小小的配置差异，浪费了我不少排查时间。记录下来，希望能帮到遇到同样问题的你。&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
   </channel>
 </rss>
