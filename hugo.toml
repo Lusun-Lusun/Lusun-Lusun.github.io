@@ -1,4 +1,4 @@
 baseURL = 'https://example.org/'
 locale = 'en-ucn'
-title = '我的技术博客'
+title = 'Lusun的技术博客'
 theme = "PaperMod"
