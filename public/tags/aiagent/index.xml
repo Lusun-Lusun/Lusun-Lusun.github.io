@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AIAgent on Lusun的技术博客</title>
+    <link>http://localhost:1313/tags/aiagent/</link>
+    <description>Recent content in AIAgent on Lusun的技术博客</description>
+    <generator>Hugo</generator>
+    <language>en-ucn</language>
+    <lastBuildDate>Mon, 11 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/aiagent/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>🚀 开发日志：从零到一构建我的第一个金融投研 Agent</title>
+      <link>http://localhost:1313/posts/26-05-11blog1/</link>
+      <pubDate>Mon, 11 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/26-05-11blog1/</guid>
+      <description>&lt;h2 id=&#34;-背景与动机&#34;&gt;📌 背景与动机&lt;/h2&gt;
+&lt;p&gt;在申请某个证券管培生的过程中，我意识到券商正处于数字化转型的关键期。投研部门每天面临海量的研报与公告，信息过载是行业痛点。为此，我决定开发一个 &lt;strong&gt;AI Agent (智能助理)&lt;/strong&gt;，利用大语言模型（LLM）实现对 PDF 研报的深度解析与精准问答。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-第一阶段架构重构从黑盒走向透明&#34;&gt;🛠️ 第一阶段：架构重构——从“黑盒”走向“透明”&lt;/h2&gt;
+&lt;p&gt;在起步阶段，我遭遇了最大的技术挑战：由于 &lt;strong&gt;LangChain 框架在 2026 年已全面演进至 0.3+ 版本&lt;/strong&gt;，传统的 &lt;code&gt;RetrievalQA&lt;/code&gt; 链式调用频繁报出 &lt;code&gt;ModuleNotFoundError&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;技术洞察&#34;&gt;技术洞察&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;问题核心&lt;/strong&gt;：旧版 API 已被废弃，底层架构进行了深度模块化拆分。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;解决方案&lt;/strong&gt;：放弃“全家桶”式的导入，改用更现代、更稳健的 &lt;strong&gt;LCEL (LangChain Expression Language)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;核心逻辑&lt;/strong&gt;：
+不再依赖预置的黑盒函数，而是通过“管道符（&lt;code&gt;|&lt;/code&gt;）”手动搭建数据流：
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 2026年主流的 LCEL RAG 架构&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rag_chain &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;context&amp;#34;&lt;/span&gt;: retriever &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; format_docs, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;question&amp;#34;&lt;/span&gt;: RunnablePassthrough()}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; prompt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; llm
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; StrOutputParser()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-第二阶段环境攻坚解决消失的路径&#34;&gt;🐛 第二阶段：环境攻坚——解决“消失的路径”&lt;/h2&gt;
+&lt;p&gt;开发过程中，我遇到了严重的“环境污染”问题：即便安装了包，系统依然无法识别。这让我深刻理解了工程标准化的重要性。&lt;/p&gt;
+&lt;h3 id=&#34;解决路径&#34;&gt;解决路径&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;风险隔离&lt;/strong&gt;：通过 python -m venv venv 建立独立的虚拟环境，确保项目依赖的纯净性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;路径溯源&lt;/strong&gt;：查阅 LangChain 官方迁移指南，意识到核心逻辑已迁移至 langchain-core。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;标准化部署&lt;/strong&gt;：配置 requirements.txt 和 .gitignore，实现了从开发环境到云端部署的无缝对接。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;-第三阶段功能实现与金融逻辑对齐&#34;&gt;🏗️ 第三阶段：功能实现与金融逻辑对齐&lt;/h2&gt;
+&lt;p&gt;作为一个面向金融业务的项目，我特意在技术实现中植入了合规与严谨性：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
